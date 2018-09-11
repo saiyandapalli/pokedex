@@ -15,6 +15,7 @@ public class Pokemon {
     private int speed;
     private int total;
     private String[] types;
+    private String imageUrl;
 
     public Pokemon(String name, int id, int attack, int defense, String flavorText, int hp, int spAtk, int spDef, String species, int speed, int total, String[] types) {
         this.name = name;
@@ -29,6 +30,7 @@ public class Pokemon {
         this.speed = speed;
         this.total = total;
         this.types = types;
+        imageUrl = "http://img.pokemondb.net/artwork/"+name.toLowerCase()+".jpg";
     }
 
     public String getName() {
@@ -125,5 +127,13 @@ public class Pokemon {
 
     public void setTypes(String[] types) {
         this.types = types;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
