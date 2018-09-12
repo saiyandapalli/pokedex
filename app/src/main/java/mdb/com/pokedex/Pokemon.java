@@ -81,59 +81,7 @@ public class Pokemon {
         return types;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setAttack(int attack) {
-        this.attack = attack;
-    }
-
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
-
-    public void setFlavorText(String flavorText) {
-        this.flavorText = flavorText;
-    }
-
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public void setSpAtk(int spAtk) {
-        this.spAtk = spAtk;
-    }
-
-    public void setSpDef(int spDef) {
-        this.spDef = spDef;
-    }
-
-    public void setSpecies(String species) {
-        this.species = species;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    public void setTypes(String[] types) {
-        this.types = types;
-    }
-
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 }
