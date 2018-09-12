@@ -58,6 +58,22 @@ public class Pokedex {
         return Lists.newArrayList(filtered);
     }
 
+    public ArrayList<Pokemon> filterByTypes(final ArrayList<String> types) {
+        Predicate<Pokemon> typePredicate = new Predicate<Pokemon>() {
+            @Override
+            public boolean apply(@NonNull Pokemon input) {
+                for (String type : types) {
+                    if (input.getTypes().contains(type)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+
+        return Lists.newArrayList(Collections2.filter(pokedex, typePredicate));
+    }
+
     public ArrayList<Pokemon> filterByName(final String predicate) {
         //Define a predicate which checks if the name starts with the input string
         Predicate<Pokemon> namePredicate = new Predicate<Pokemon>() {

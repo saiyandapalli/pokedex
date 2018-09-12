@@ -3,6 +3,7 @@ package mdb.com.pokedex;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -12,12 +13,12 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class FilterTests {
-    private Pokemon pikachu = new Pokemon("Pikachu", 100, 20, 50, "", 100, 20, 50, "", 50, 200, new String[0]);
-    private Pokemon bulbasaur = new Pokemon("Bulbasaur", 101, 50, 20, "", 100, 20, 50, "", 50, 200, new String[0]);
-    private Pokemon squirtle = new Pokemon("Squirtle", 102, 50, 30, "", 100, 20, 50, "", 50, 200, new String[0]);
-    private Pokemon charmander = new Pokemon("Charmander", 103, 50, 10, "", 100, 20, 50, "", 50, 200, new String[0]);
-    private Pokemon charizard = new Pokemon("Charizard", 104, 90, 50, "", 100, 20, 50, "", 50, 200, new String[0]);
-    private Pokemon caterpie = new Pokemon("Caterpie", 105, 10, 50, "", 100, 20, 50, "", 50, 200, new String[0]);
+    private Pokemon pikachu = new Pokemon("Pikachu", 100, 20, 50, "", 100, 20, 50, "", 50, 200, new ArrayList<>(Arrays.asList("Electric")));
+    private Pokemon bulbasaur = new Pokemon("Bulbasaur", 101, 50, 20, "", 100, 20, 50, "", 50, 200, new ArrayList<>(Arrays.asList("Grass", "Poison")));
+    private Pokemon squirtle = new Pokemon("Squirtle", 102, 50, 30, "", 100, 20, 50, "", 50, 200, new ArrayList<>(Arrays.asList("Water")));
+    private Pokemon charmander = new Pokemon("Charmander", 103, 50, 10, "", 100, 20, 50, "", 50, 200, new ArrayList<>(Arrays.asList("Fire")));
+    private Pokemon charizard = new Pokemon("Charizard", 104, 90, 50, "", 100, 20, 50, "", 50, 200, new ArrayList<>(Arrays.asList("Fire", "Dragon")));
+    private Pokemon caterpie = new Pokemon("Caterpie", 105, 10, 50, "", 100, 20, 50, "", 50, 200, new ArrayList<>(Arrays.asList("Bug", "Poison")));
 
     private Pokedex constructPokedex() {
         Pokedex dex = Pokedex.getSharedInstance();
@@ -94,6 +95,26 @@ public class FilterTests {
         defenseBounds = new Bounds(20, 30);
         Pokemon[] correct1 = {bulbasaur, squirtle};
         filtered = dex.pointFilter(attackBounds, defenseBounds, hpBounds, spAtkBounds, spDefBounds, speedBounds);
+        assertEquals(correct1.length, filtered.size());
+        for (int i=0; i<filtered.size(); i++) {
+            assertEquals(correct1[i], filtered.get(i));
+        }
+    }
+
+    @Test
+    public void type_filter() {
+        Pokedex dex = constructPokedex();
+
+        ArrayList<Pokemon> filtered = dex.filterByTypes(new ArrayList<>(Arrays.asList("Poison")));
+        Pokemon[] correct = {bulbasaur, caterpie};
+
+        assertEquals(correct.length, filtered.size());
+        for (int i=0; i<filtered.size(); i++) {
+            assertEquals(correct[i], filtered.get(i));
+        }
+
+        filtered = dex.filterByTypes(new ArrayList<>(Arrays.asList("Poison", "Water")));
+        Pokemon[] correct1 = {bulbasaur, squirtle, caterpie};
         assertEquals(correct1.length, filtered.size());
         for (int i=0; i<filtered.size(); i++) {
             assertEquals(correct1[i], filtered.get(i));
