@@ -33,6 +33,24 @@ public class Pokemon {
         imageUrl = "http://img.pokemondb.net/artwork/"+name.toLowerCase()+".jpg";
     }
 
+    public int getPointValue(PointAttribute attr) {
+        switch (attr) {
+            case ATTACK:
+                return attack;
+            case DEFENSE:
+                return defense;
+            case HP:
+                return hp;
+            case SP_ATK:
+                return  spAtk;
+            case SP_DEF:
+                return spDef;
+            case SPEED:
+                return speed;
+        }
+        return 0;
+    }
+
     public String getName() {
         return name;
     }
@@ -84,4 +102,9 @@ public class Pokemon {
     public String getImageUrl() {
         return imageUrl;
     }
+}
+
+//An enum to keep track of the different types of integer values stored in Pokémon
+enum PointAttribute {
+    ATTACK, DEFENSE, HP, SP_ATK, SP_DEF, SPEED
 }
