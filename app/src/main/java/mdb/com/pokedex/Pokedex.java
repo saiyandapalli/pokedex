@@ -1,5 +1,7 @@
 package mdb.com.pokedex;
 
+import android.support.annotation.NonNull;
+
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
@@ -22,7 +24,7 @@ public class Pokedex {
         The constructor is private because it should only be called within Pokedex
         */
 
-        pokedex = new ArrayList<Pokemon>();
+        pokedex = new ArrayList<>();
         /* TODO: Import from JSON */
         /* TODO: Sort pokedex by id */
     }
@@ -39,7 +41,7 @@ public class Pokedex {
     private Predicate<Pokemon> pointPredicate(final PointAttribute attribute, final Bounds bounds) {
         return new Predicate<Pokemon>() {
             @Override
-            public boolean apply(Pokemon input) {
+            public boolean apply(@NonNull Pokemon input) {
                 return bounds.isValid(input.getPointValue(attribute));
             }
         };
@@ -61,7 +63,7 @@ public class Pokedex {
         Predicate<Pokemon> namePredicate = new Predicate<Pokemon>() {
             @Override
             public boolean apply(Pokemon input) {
-                return input.getName().matches("^"+predicate);
+                return input.getName().toLowerCase().matches("^("+predicate.toLowerCase()+").*$");
             }
         };
 
@@ -93,7 +95,7 @@ class Bounds {
     private int minimum;
     private int maximum;
 
-    public Bounds(int min, int max) {
+    Bounds(int min, int max) {
         minimum = min;
         maximum = max;
     }
