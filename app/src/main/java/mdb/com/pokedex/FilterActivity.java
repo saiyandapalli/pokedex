@@ -1,18 +1,112 @@
 package mdb.com.pokedex;
 
+import android.content.Context;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 //  This activity allows for the filtering of Pokemon through attributes
 //  Includes two sections:
 //      Top Section = min attack, min defense, min health
 //      Bottom Section = selectable CATEGORIES
 
+//  This works DIRECTLY with CategoryAdapter
+
+//  ITEMS TO DO:
+//  • Filling categories with info from previous screen – populateCategories(0
+//  • Filling textviews with info from previous screen – populateTextViews()
+//  • Passing data to previous screen through done button – doneTapped()
+
 public class FilterActivity extends AppCompatActivity {
+
+    private HashMap<String, Boolean> categories;
+    private RecyclerView recyclerView;
+    private CategoryAdapter adapter;
+    private MenuItem doneButton;
+
+    private EditText minAttackEditText;
+    private EditText minDefenseEditText;
+    private EditText minHealthEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
+        getSupportActionBar().setTitle("Filter");
+
+        configureViews();
+
+        // TODO: Edit these methods to fill the categories with a list provided from previous screen
+        // This is the data from the most recent "Filter" –
+        populateCategories();
+        populateTextViews();
+
+        setupRecyclerView();
+    }
+
+    private void populateTextViews() {
+        minAttackEditText.setText("0");
+        minDefenseEditText.setText("0");
+        minHealthEditText.setText("0");
+    }
+
+    private void configureViews() {
+        minAttackEditText = findViewById(R.id.minAttackEditText);
+        minDefenseEditText = findViewById(R.id.minDefenseEditText);
+        minHealthEditText = findViewById(R.id.minHealthEditText);
+    }
+
+    // Replace with appropriate code to populate categories (probably from intent or from singleton)
+    private void populateCategories() {
+        categories = new HashMap<>();
+        categories.put("Cat1", false);
+        categories.put("Cat2", false);
+        categories.put("Cat3", false);
+    }
+
+    private void setupRecyclerView() {
+        recyclerView = findViewById(R.id.selectCategoryRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new CategoryAdapter(FilterActivity.this, categories);
+        recyclerView.setAdapter(adapter);
+    }
+
+    // Adds the done button to the toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        doneButton = menu.add(Menu.NONE, 1000, Menu.NONE, "Done");
+        doneButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // Called when done button is tapped
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item == doneButton) {
+            doneTapped();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void doneTapped() {
+        System.out.println("DONE TAPPED!");
+
+        // Use this to get selected categories as HashMap
+        System.out.println(adapter.categories);
+        System.out.println("Min Attack = " + minAttackEditText.getText().toString());
+        System.out.println("Min Defense = " + minDefenseEditText.getText().toString());
+        System.out.println("Min Health = " + minHealthEditText.getText().toString());
+
+        // TODO: Handle logic for passing this information to the previous screen
     }
 }
