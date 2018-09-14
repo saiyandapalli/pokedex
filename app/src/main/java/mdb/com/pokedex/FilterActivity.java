@@ -48,7 +48,6 @@ public class FilterActivity extends AppCompatActivity {
 
         configureViews();
 
-        // TODO: Edit these methods to fill the categories with a list provided from previous screen
         // This is the data from the most recent "Filter" –
         populateCategories();
         populateTextViews();
