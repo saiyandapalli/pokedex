@@ -3,11 +3,15 @@ package mdb.com.pokedex;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.module.AppGlideModule;
 
 import org.w3c.dom.Text;
 
@@ -42,6 +46,11 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
         pokemonViewHolder.nameText.setText(p.getName());
         pokemonViewHolder.speciesText.setText(p.getSpecies());
         pokemonViewHolder.typeText.setText(p.getTypes().toString());
+
+        //As a placeholder while the image loads
+        pokemonViewHolder.pokeImageView.setImageResource(android.R.mipmap.sym_def_app_icon);
+        Log.d("Loading Image", "Loading Image with URL: "+p.getImageUrl());
+        Glide.with(context).load(p.getImageUrl()).into(pokemonViewHolder.pokeImageView);
     }
 
     public int getItemCount() {

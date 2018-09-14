@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         SearchView mSearchView = (SearchView) mSearch.getActionView();
 
-        mSearchView.setQueryHint(R.string.search_hint);
+        mSearchView.setQueryHint(getString(R.string.search_hint));
         //Binds a listener to the search view so we can detect when something is typed in
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
