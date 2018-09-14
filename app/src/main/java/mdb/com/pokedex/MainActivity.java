@@ -3,9 +3,12 @@ package mdb.com.pokedex;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.ActionMenuItem;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +19,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
+    private boolean isGridView = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +77,22 @@ public class MainActivity extends AppCompatActivity {
                 Intent filterIntent = new Intent(getApplicationContext(), FilterActivity.class);
                 startActivityForResult(filterIntent, 1);
                 break;
+            case R.id.action_layout_toggle:
+                isGridView = !isGridView;
+                supportInvalidateOptionsMenu();
+                ActionMenuItemView toggle = findViewById(R.id.action_layout_toggle);
+
+                RecyclerView recycler = findViewById(R.id.recycler);
+                if (isGridView) {
+                    StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                    recycler.setLayoutManager(sglm);
+                    //TODO: This line is supposed to switch the icon, but it doesn't work
+                    item.setIcon(android.R.drawable.ic_dialog_dialer);
+                } else {
+                    recycler.setLayoutManager(new LinearLayoutManager(this));
+                    //TODO: This line is supposed to switch the icon, but it doesn't work
+                    item.setIcon(android.R.drawable.ic_menu_sort_by_size);
+                }
         }
         return super.onOptionsItemSelected(item);
     }
