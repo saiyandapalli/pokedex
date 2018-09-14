@@ -102,7 +102,6 @@ public class FilterActivity extends AppCompatActivity {
     private void doneTapped() {
         System.out.println("DONE TAPPED!");
 
-        // TODO: Handle logic for passing this information to the previous screen
         Intent intent = new Intent();
         intent.putExtra("minAttack", minAttackEditText.getText().toString());
         intent.putExtra("minDefense", minDefenseEditText.getText().toString());
