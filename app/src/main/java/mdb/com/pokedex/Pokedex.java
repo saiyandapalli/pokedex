@@ -8,9 +8,12 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
 A singleton class to store an array list of all Pokemon.
@@ -19,6 +22,7 @@ Handles filtering the array list and searching it for
 public class Pokedex {
     private static Pokedex sharedInstance;
     private ArrayList<Pokemon> pokedex;
+    private Set<String> pokeTypes;
     // TODO: Implement a static variable containing a list of all categories
 
     private Pokedex() {
@@ -27,6 +31,7 @@ public class Pokedex {
         */
 
         pokedex = new ArrayList<>();
+        pokeTypes = new HashSet<>();
     }
 
     public static Pokedex getSharedInstance() {
@@ -74,6 +79,22 @@ public class Pokedex {
         return Lists.newArrayList(Collections2.filter(pokedex, typePredicate));
     }
 
+    public ArrayList<Pokemon> filterByTypes(final ArrayList<String> types, ArrayList<Pokemon> pokemon) {
+        Predicate<Pokemon> typePredicate = new Predicate<Pokemon>() {
+            @Override
+            public boolean apply(@NonNull Pokemon input) {
+                for (String type : types) {
+                    if (input.getTypes().contains(type)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+
+        return Lists.newArrayList(Collections2.filter(pokemon, typePredicate));
+    }
+
     public ArrayList<Pokemon> filterByName(final String predicate) {
         //Define a predicate which checks if the name starts with the input string
         Predicate<Pokemon> namePredicate = new Predicate<Pokemon>() {
@@ -103,17 +124,18 @@ public class Pokedex {
     }
 
     public void loadPokedex(String json) {
-        try {
-            pokedex = PokeParser.parseJSON(json);
+        PokeParser parser = new PokeParser(json);
 
-            Collections.sort(pokedex);
-        } catch (Exception e) {
-            Log.e("JSONErr", e.getMessage());
-        }
+        pokedex = parser.getPokemon();
+        pokeTypes = parser.getPokeTypes();
     }
 
     public ArrayList<Pokemon> getPokedex() {
         return pokedex;
+    }
+
+    public Set<String> getPokeTypes() {
+        return pokeTypes;
     }
 }
 

@@ -14,7 +14,10 @@ import android.view.MenuItem;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -103,16 +106,25 @@ public class MainActivity extends AppCompatActivity {
                 int MIN_NUMERIC = 0;
 
                 Bounds defaultBounds = new Bounds(MIN_NUMERIC, MAX_NUMERIC);
-                List<Pokemon> filtered = Pokedex.getSharedInstance().pointFilter(new Bounds(minAttack, MAX_NUMERIC),
+                ArrayList<Pokemon> filtered = Pokedex.getSharedInstance().pointFilter(new Bounds(minAttack, MAX_NUMERIC),
                         new Bounds(minDefense, MAX_NUMERIC), new Bounds(minHealth, MAX_NUMERIC), defaultBounds,
                         defaultBounds, defaultBounds);
-
-                mAdapter.setData(filtered);
 
                 Log.d("Filter","Filter: Min Attack="+minAttack+"; Min Defense="+minDefense+"; Min Health="+minHealth);
 
                 HashMap<String, Boolean> categories = (HashMap<String, Boolean>) data.getSerializableExtra("categories");
-                Log.d("Filter Categories", categories.toString());
+                ArrayList<String> filterCategories = new ArrayList<String>();
+                for (String key : categories.keySet()) {
+                    if (categories.get(key)) {
+                        filterCategories.add(key);
+                    }
+                }
+
+                if (filterCategories.size() > 0)
+                    filtered = Pokedex.getSharedInstance().filterByTypes(filterCategories, filtered);
+
+                Collections.sort(filtered);
+                mAdapter.setData(filtered);
             }
         }
     }

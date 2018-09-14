@@ -70,9 +70,9 @@ public class FilterActivity extends AppCompatActivity {
     // Replace with appropriate code to populate categories (probably from intent or from singleton)
     private void populateCategories() {
         categories = new HashMap<>();
-        categories.put("Cat1", false);
-        categories.put("Cat2", false);
-        categories.put("Cat3", false);
+        for (String type : Pokedex.getSharedInstance().getPokeTypes()) {
+            categories.put(type, false);
+        }
     }
 
     private void setupRecyclerView() {
