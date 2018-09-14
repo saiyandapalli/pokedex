@@ -1,5 +1,8 @@
 package mdb.com.pokedex;
 
+import java.sql.Array;
+import java.util.ArrayList;
+
 public class Pokemon {
     //{"#":"460","Attack":"92","Defense":"75","FlavorText":"","HP":"90","Sp. Atk":"92","Sp. Def":"85",
     // "Species":"Frost Tree Pok\u00e9mon","Speed":"60","Total":"494","Type":["Grass","Ice"]}
@@ -14,10 +17,10 @@ public class Pokemon {
     private String species;
     private int speed;
     private int total;
-    private String[] types;
+    private ArrayList<String> types;
     private String imageUrl;
 
-    public Pokemon(String name, int id, int attack, int defense, String flavorText, int hp, int spAtk, int spDef, String species, int speed, int total, String[] types) {
+    public Pokemon(String name, int id, int attack, int defense, String flavorText, int hp, int spAtk, int spDef, String species, int speed, int total, ArrayList<String> types) {
         this.name = name;
         this.id = id;
         this.attack = attack;
@@ -77,7 +80,7 @@ public class Pokemon {
         return total;
     }
 
-    public String[] getTypes() {
+    public ArrayList<String> getTypes() {
         return types;
     }
 
@@ -125,7 +128,7 @@ public class Pokemon {
         this.total = total;
     }
 
-    public void setTypes(String[] types) {
+    public void setTypes(ArrayList<String> types) {
         this.types = types;
     }
 
