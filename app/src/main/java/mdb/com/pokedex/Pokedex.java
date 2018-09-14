@@ -17,6 +17,7 @@ Handles filtering the array list and searching it for
 public class Pokedex {
     private static Pokedex sharedInstance;
     private ArrayList<Pokemon> pokedex;
+    // TODO: Implement a static variable containing a list of all categories
 
     private Pokedex() {
         /*

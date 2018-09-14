@@ -17,14 +17,20 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
     private Context context;
     private List<Pokemon> data;
 
-    PokemonAdapter(Context context, List<Pokemon> memberList) {
-        this.data = memberList;
+    PokemonAdapter(Context context, List<Pokemon> pokemonList) {
+        this.data = pokemonList;
         this.context = context;
+    }
+
+    public void setData(List<Pokemon> pokemonList) {
+        this.data = pokemonList;
+        notifyDataSetChanged();
     }
 
 
     @Override
     public PokemonViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        //TODO: Make this a different layout depending on whether or not we are in List View or Card View
         View v = LayoutInflater.from(context).inflate(R.layout.rowview_pokemon, viewGroup, false);
         return new PokemonViewHolder(v);
     }

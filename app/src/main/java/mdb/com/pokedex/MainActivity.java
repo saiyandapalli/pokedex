@@ -16,10 +16,12 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private boolean isGridView = false;
+    private PokemonAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +39,13 @@ public class MainActivity extends AppCompatActivity {
         Pokemon charizard = new Pokemon("Charizard", 104, 90, 50, "", 100, 20, 50, "Dragon", 50, 200, new ArrayList<>(Arrays.asList("Fire", "Dragon")));
         Pokemon caterpie = new Pokemon("Caterpie", 105, 10, 50, "", 100, 20, 50, "Bug", 50, 200, new ArrayList<>(Arrays.asList("Bug", "Poison")));
 
-        ArrayList<Pokemon> pokedex = new ArrayList<>(Arrays.asList(pikachu, bulbasaur, squirtle, charmander, charizard, caterpie));
+        ArrayList<Pokemon> dummyArr = new ArrayList<>(Arrays.asList(pikachu, bulbasaur, squirtle, charmander, charizard, caterpie));
 
-        PokemonAdapter pokeAdapter = new PokemonAdapter(getApplicationContext(), pokedex);
-        recyclerView.setAdapter(pokeAdapter);
+        Pokedex dex = Pokedex.getSharedInstance();
+        dex.getPokedex().addAll(dummyArr);
+
+        mAdapter = new PokemonAdapter(getApplicationContext(), dex.getPokedex());
+        recyclerView.setAdapter(mAdapter);
     }
 
     ///Method which creates the options menu
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 Log.d("Change", "Query is: "+s);
+                mAdapter.setData(Pokedex.getSharedInstance().filterByName(s));
                 return false;
             }
         });
@@ -102,9 +108,19 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                String minAttack = data.getStringExtra("minAttack");
-                String minDefense = data.getStringExtra("minDefense");
-                String minHealth = data.getStringExtra("minHealth");
+                int minAttack = Integer.parseInt(data.getStringExtra("minAttack"));
+                int minDefense = Integer.parseInt(data.getStringExtra("minDefense"));
+                int minHealth = Integer.parseInt(data.getStringExtra("minHealth"));
+
+                int MAX_NUMERIC = 100;
+                int MIN_NUMERIC = 0;
+
+                Bounds defaultBounds = new Bounds(MIN_NUMERIC, MAX_NUMERIC);
+                List<Pokemon> filtered = Pokedex.getSharedInstance().pointFilter(new Bounds(minAttack, MAX_NUMERIC),
+                        new Bounds(minDefense, MAX_NUMERIC), new Bounds(minHealth, MAX_NUMERIC), defaultBounds,
+                        defaultBounds, defaultBounds);
+
+                mAdapter.setData(filtered);
 
                 Log.d("Filter","Filter: Min Attack="+minAttack+"; Min Defense="+minDefense+"; Min Health="+minHealth);
 
