@@ -54,6 +54,5 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             checkBox = itemView.findViewById(R.id.checkBox);
         }
     }
-
 }
 

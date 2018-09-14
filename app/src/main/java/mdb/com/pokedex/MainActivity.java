@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.ActionMenuItemView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.lang.Integer.max;
 import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity {
@@ -87,12 +89,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_layout_toggle:
                 isGridView = !isGridView;
+
                 supportInvalidateOptionsMenu();
 
                 RecyclerView recycler = findViewById(R.id.recycler);
                 if (isGridView) {
-                    StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                    recycler.setLayoutManager(sglm);
+                    GridLayoutManager glm = new GridLayoutManager(this, 3);
+                    //StaggeredGridLayoutManager glm = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                    recycler.setLayoutManager(glm);
                     //TODO: This line is supposed to switch the icon, but it doesn't work
                     item.setIcon(android.R.drawable.ic_dialog_dialer);
                 } else {
@@ -100,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
                     //TODO: This line is supposed to switch the icon, but it doesn't work
                     item.setIcon(android.R.drawable.ic_menu_sort_by_size);
                 }
+
+                mAdapter.switchLayout();
+                recycler.setAdapter(mAdapter);
         }
         return super.onOptionsItemSelected(item);
     }

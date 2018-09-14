@@ -21,9 +21,12 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
     private Context context;
     private List<Pokemon> data;
 
+    private boolean isGridLayout;
+
     PokemonAdapter(Context context, List<Pokemon> pokemonList) {
         this.data = pokemonList;
         this.context = context;
+        this.isGridLayout = false;
     }
 
     public void setData(List<Pokemon> pokemonList) {
@@ -35,8 +38,9 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
     @Override
     public PokemonViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         //TODO: Make this a different layout depending on whether or not we are in List View or Card View
-        View v = LayoutInflater.from(context).inflate(R.layout.rowview_pokemon, viewGroup, false);
-        return new PokemonViewHolder(v);
+        int layoutId = (isGridLayout) ? R.layout.gridview_pokemon : R.layout.rowview_pokemon;
+        View v = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
+        return new PokemonViewHolder(v, isGridLayout);
     }
 
     @Override
@@ -44,8 +48,10 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
         Pokemon p = data.get(i);
 
         pokemonViewHolder.nameText.setText(p.getName());
-        pokemonViewHolder.speciesText.setText(p.getSpecies());
-        pokemonViewHolder.typeText.setText(p.getTypes().toString());
+        if (!isGridLayout) {
+            pokemonViewHolder.speciesText.setText(p.getSpecies());
+            pokemonViewHolder.typeText.setText(p.getTypes().toString());
+        }
 
         //As a placeholder while the image loads
         pokemonViewHolder.pokeImageView.setImageResource(android.R.mipmap.sym_def_app_icon);
@@ -56,6 +62,10 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
     public int getItemCount() {
         return data.size();
     }
+    public void switchLayout() {
+        isGridLayout = !isGridLayout;
+        notifyDataSetChanged();
+    }
 
     class PokemonViewHolder extends RecyclerView.ViewHolder {
         private TextView nameText;
@@ -64,12 +74,17 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
 
         private ImageView pokeImageView;
 
-        PokemonViewHolder(View itemView) {
+        PokemonViewHolder(View itemView, boolean isGridCard) {
             super(itemView);
-            nameText = itemView.findViewById(R.id.nameText);
-            speciesText = itemView.findViewById(R.id.speciesText);
-            typeText = itemView.findViewById(R.id.typesText);
-            pokeImageView = itemView.findViewById(R.id.pokeImageView);
+            if (!isGridCard) {
+                nameText = itemView.findViewById(R.id.nameText);
+                speciesText = itemView.findViewById(R.id.speciesText);
+                typeText = itemView.findViewById(R.id.typesText);
+                pokeImageView = itemView.findViewById(R.id.pokeImageView);
+            } else {
+                nameText = itemView.findViewById(R.id.gridPokemonName);
+                pokeImageView = itemView.findViewById(R.id.gridPokemonImage);
+            }
         }
     }
 
