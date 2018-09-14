@@ -1,6 +1,7 @@
 package mdb.com.pokedex;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -9,6 +10,7 @@ import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /*
 A singleton class to store an array list of all Pokemon.
@@ -21,13 +23,10 @@ public class Pokedex {
 
     private Pokedex() {
         /*
-        Load from the JSON into the list
         The constructor is private because it should only be called within Pokedex
         */
 
         pokedex = new ArrayList<>();
-        /* TODO: Import from JSON */
-        /* TODO: Sort pokedex by id */
     }
 
     public static Pokedex getSharedInstance() {
@@ -100,6 +99,16 @@ public class Pokedex {
             return pokeCollection.iterator().next();
         } else {
             return null;
+        }
+    }
+
+    public void loadPokedex(String json) {
+        try {
+            pokedex = PokeParser.parseJSON(json);
+
+            Collections.sort(pokedex);
+        } catch (Exception e) {
+            Log.e("JSONErr", e.getMessage());
         }
     }
 

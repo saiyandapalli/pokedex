@@ -1,11 +1,9 @@
 package mdb.com.pokedex;
 
-import java.sql.Array;
+import android.support.annotation.NonNull;
 import java.util.ArrayList;
 
-public class Pokemon {
-    //{"#":"460","Attack":"92","Defense":"75","FlavorText":"","HP":"90","Sp. Atk":"92","Sp. Def":"85",
-    // "Species":"Frost Tree Pok\u00e9mon","Speed":"60","Total":"494","Type":["Grass","Ice"]}
+public class Pokemon implements Comparable {
     private String name;
     private int id;
     private int attack;
@@ -104,6 +102,15 @@ public class Pokemon {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        if (o instanceof Pokemon) {
+            return this.id - ((Pokemon) o).getId();
+        } else {
+            return -1;
+        }
     }
 }
 

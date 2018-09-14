@@ -3,7 +3,6 @@ package mdb.com.pokedex;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.menu.ActionMenuItem;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,21 +29,9 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // TODO: Replace with Pokedex
-        //Some dummy pokemon just to test the recycler view
-        Pokemon pikachu = new Pokemon("Pikachu", 100, 20, 50, "", 100, 20, 50, "Rat", 50, 200, new ArrayList<>(Arrays.asList("Electric")));
-        Pokemon bulbasaur = new Pokemon("Bulbasaur", 101, 50, 20, "", 100, 20, 50, "Monster", 50, 200, new ArrayList<>(Arrays.asList("Grass", "Poison")));
-        Pokemon squirtle = new Pokemon("Squirtle", 102, 50, 30, "", 100, 20, 50, "Water thing", 50, 200, new ArrayList<>(Arrays.asList("Water")));
-        Pokemon charmander = new Pokemon("Charmander", 103, 50, 10, "", 100, 20, 50, "Dragon", 50, 200, new ArrayList<>(Arrays.asList("Fire")));
-        Pokemon charizard = new Pokemon("Charizard", 104, 90, 50, "", 100, 20, 50, "Dragon", 50, 200, new ArrayList<>(Arrays.asList("Fire", "Dragon")));
-        Pokemon caterpie = new Pokemon("Caterpie", 105, 10, 50, "", 100, 20, 50, "Bug", 50, 200, new ArrayList<>(Arrays.asList("Bug", "Poison")));
+        Pokedex.getSharedInstance().loadPokedex(getJSON());
 
-        ArrayList<Pokemon> dummyArr = new ArrayList<>(Arrays.asList(pikachu, bulbasaur, squirtle, charmander, charizard, caterpie));
-
-        Pokedex dex = Pokedex.getSharedInstance();
-        dex.getPokedex().addAll(dummyArr);
-
-        mAdapter = new PokemonAdapter(getApplicationContext(), dex.getPokedex());
+        mAdapter = new PokemonAdapter(getApplicationContext(), Pokedex.getSharedInstance().getPokedex());
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -129,4 +116,26 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    private String getJSON() {
+        String json = null;
+        try {
+            InputStream is = getAssets().open("pokeData.json");
+
+            int size = is.available();
+
+            byte[] buffer = new byte[size];
+
+            is.read(buffer);
+
+            is.close();
+
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
 }
