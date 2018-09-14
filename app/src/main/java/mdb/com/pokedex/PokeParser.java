@@ -17,8 +17,8 @@ public class PokeParser {
     private Set<String> pokeTypes;
 
     PokeParser(String json) {
-        pokemon = new ArrayList<Pokemon>();
-        pokeTypes = new HashSet<String>();
+        pokemon = new ArrayList<>();
+        pokeTypes = new HashSet<>();
 
         try {
             parseJSON(json);

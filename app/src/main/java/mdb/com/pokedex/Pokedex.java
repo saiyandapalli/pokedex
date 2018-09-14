@@ -128,6 +128,8 @@ public class Pokedex {
 
         pokedex = parser.getPokemon();
         pokeTypes = parser.getPokeTypes();
+
+        Collections.sort(pokedex);
     }
 
     public ArrayList<Pokemon> getPokedex() {

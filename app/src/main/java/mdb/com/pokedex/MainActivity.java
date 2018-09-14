@@ -15,10 +15,13 @@ import android.view.MenuItem;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,7 +59,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 Log.d("Change", "Query is: "+s);
-                mAdapter.setData(Pokedex.getSharedInstance().filterByName(s));
+                try {
+                    int id = Integer.parseInt(s);
+                    Pokemon pokemon = Pokedex.getSharedInstance().getPokemonWithId(id);
+                    mAdapter.setData(Arrays.asList(pokemon));
+                } catch (Exception ex) {
+                    mAdapter.setData(Pokedex.getSharedInstance().filterByName(s));
+                }
+
                 return false;
             }
         });
@@ -76,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_layout_toggle:
                 isGridView = !isGridView;
                 supportInvalidateOptionsMenu();
-                ActionMenuItemView toggle = findViewById(R.id.action_layout_toggle);
 
                 RecyclerView recycler = findViewById(R.id.recycler);
                 if (isGridView) {
@@ -98,9 +107,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                int minAttack = Integer.parseInt(data.getStringExtra("minAttack"));
-                int minDefense = Integer.parseInt(data.getStringExtra("minDefense"));
-                int minHealth = Integer.parseInt(data.getStringExtra("minHealth"));
+                int minAttack = parseInt(data.getStringExtra("minAttack"));
+                int minDefense = parseInt(data.getStringExtra("minDefense"));
+                int minHealth = parseInt(data.getStringExtra("minHealth"));
 
                 int MAX_NUMERIC = 100;
                 int MIN_NUMERIC = 0;
