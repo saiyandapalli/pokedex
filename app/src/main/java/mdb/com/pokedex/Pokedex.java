@@ -23,7 +23,13 @@ public class Pokedex {
     private static Pokedex sharedInstance;
     private ArrayList<Pokemon> pokedex;
     private Set<String> pokeTypes;
-    // TODO: Implement a static variable containing a list of all categories
+
+    private Bounds defaultAttackBounds;
+    private Bounds defaultDefenseBounds;
+    private Bounds defaultHealthBounds;
+    private Bounds defaultSpAtkBounds;
+    private Bounds defaultSpDefBounds;
+    private Bounds defaultSpeedBounds;
 
     private Pokedex() {
         /*
@@ -129,6 +135,13 @@ public class Pokedex {
         pokedex = parser.getPokemon();
         pokeTypes = parser.getPokeTypes();
 
+        defaultAttackBounds = parser.getDefaultAttackBounds();
+        defaultDefenseBounds = parser.getDefaultDefenseBounds();
+        defaultHealthBounds = parser.getDefaultHealthBounds();
+        defaultSpAtkBounds = parser.getDefaultSpAtkBounds();
+        defaultSpDefBounds = parser.getDefaultSpDefBounds();
+        defaultSpeedBounds = parser.getDefaultSpeedBounds();
+
         Collections.sort(pokedex);
     }
 
@@ -138,6 +151,30 @@ public class Pokedex {
 
     public Set<String> getPokeTypes() {
         return pokeTypes;
+    }
+
+    public Bounds getDefaultAttackBounds() {
+        return defaultAttackBounds;
+    }
+
+    public Bounds getDefaultDefenseBounds() {
+        return defaultDefenseBounds;
+    }
+
+    public Bounds getDefaultHealthBounds() {
+        return defaultHealthBounds;
+    }
+
+    public Bounds getDefaultSpAtkBounds() {
+        return defaultSpAtkBounds;
+    }
+
+    public Bounds getDefaultSpDefBounds() {
+        return defaultSpDefBounds;
+    }
+
+    public Bounds getDefaultSpeedBounds() {
+        return defaultSpeedBounds;
     }
 }
 
@@ -152,6 +189,14 @@ class Bounds {
 
     public boolean isValid(int value) {
         return value >= minimum && value <= maximum;
+    }
+
+    public int getMinimum() {
+        return minimum;
+    }
+
+    public int getMaximum() {
+        return maximum;
     }
 }
 

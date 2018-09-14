@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     int id = Integer.parseInt(s);
                     Pokemon pokemon = Pokedex.getSharedInstance().getPokemonWithId(id);
-                    mAdapter.setData(Arrays.asList(pokemon));
+                    mAdapter.setData(Collections.singletonList(pokemon));
                 } catch (Exception ex) {
                     mAdapter.setData(Pokedex.getSharedInstance().filterByName(s));
                 }
@@ -111,18 +111,25 @@ public class MainActivity extends AppCompatActivity {
                 int minDefense = parseInt(data.getStringExtra("minDefense"));
                 int minHealth = parseInt(data.getStringExtra("minHealth"));
 
-                int MAX_NUMERIC = 100;
-                int MIN_NUMERIC = 0;
+                Pokedex dex = Pokedex.getSharedInstance();
 
-                Bounds defaultBounds = new Bounds(MIN_NUMERIC, MAX_NUMERIC);
-                ArrayList<Pokemon> filtered = Pokedex.getSharedInstance().pointFilter(new Bounds(minAttack, MAX_NUMERIC),
-                        new Bounds(minDefense, MAX_NUMERIC), new Bounds(minHealth, MAX_NUMERIC), defaultBounds,
-                        defaultBounds, defaultBounds);
+                Bounds defaultAttackBounds = dex.getDefaultAttackBounds();
+                Bounds defaultDefBounds = dex.getDefaultDefenseBounds();
+                Bounds defaultHealthBounds = dex.getDefaultHealthBounds();
+                Bounds defaultSpAtkBounds = dex.getDefaultSpAtkBounds();
+                Bounds defaultSpDefBounds = dex.getDefaultDefenseBounds();
+                Bounds defaultSpeedBounds = dex.getDefaultSpeedBounds();
+
+                ArrayList<Pokemon> filtered = Pokedex.getSharedInstance().pointFilter(
+                        new Bounds(minAttack, defaultAttackBounds.getMaximum()),
+                        new Bounds(minDefense, defaultDefBounds.getMaximum()),
+                        new Bounds(minHealth, defaultHealthBounds.getMaximum()),
+                        defaultSpAtkBounds, defaultSpDefBounds, defaultSpeedBounds);
 
                 Log.d("Filter","Filter: Min Attack="+minAttack+"; Min Defense="+minDefense+"; Min Health="+minHealth);
 
                 HashMap<String, Boolean> categories = (HashMap<String, Boolean>) data.getSerializableExtra("categories");
-                ArrayList<String> filterCategories = new ArrayList<String>();
+                ArrayList<String> filterCategories = new ArrayList<>();
                 for (String key : categories.keySet()) {
                     if (categories.get(key)) {
                         filterCategories.add(key);
@@ -139,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getJSON() {
-        String json = null;
+        String json;
         try {
             InputStream is = getAssets().open("pokeData.json");
 
