@@ -20,7 +20,7 @@ public class Pokemon {
     private ArrayList<String> types;
     private String imageUrl;
 
-    public Pokemon(String name, int id, int attack, int defense, String flavorText, int hp, int spAtk, int spDef, String species, int speed, int total, ArrayList<String> types) {
+    Pokemon(String name, int id, int attack, int defense, String flavorText, int hp, int spAtk, int spDef, String species, int speed, int total, ArrayList<String> types) {
         this.name = name;
         this.id = id;
         this.attack = attack;
@@ -34,6 +34,24 @@ public class Pokemon {
         this.total = total;
         this.types = types;
         imageUrl = "http://img.pokemondb.net/artwork/"+name.toLowerCase()+".jpg";
+    }
+
+    public int getPointValue(PointAttribute attr) {
+        switch (attr) {
+            case ATTACK:
+                return attack;
+            case DEFENSE:
+                return defense;
+            case HP:
+                return hp;
+            case SP_ATK:
+                return  spAtk;
+            case SP_DEF:
+                return spDef;
+            case SPEED:
+                return speed;
+        }
+        return 0;
     }
 
     public String getName() {
@@ -84,59 +102,12 @@ public class Pokemon {
         return types;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setAttack(int attack) {
-        this.attack = attack;
-    }
-
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
-
-    public void setFlavorText(String flavorText) {
-        this.flavorText = flavorText;
-    }
-
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public void setSpAtk(int spAtk) {
-        this.spAtk = spAtk;
-    }
-
-    public void setSpDef(int spDef) {
-        this.spDef = spDef;
-    }
-
-    public void setSpecies(String species) {
-        this.species = species;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    public void setTypes(ArrayList<String> types) {
-        this.types = types;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
+}
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+//An enum to keep track of the different types of integer values stored in Pokémon
+enum PointAttribute {
+    ATTACK, DEFENSE, HP, SP_ATK, SP_DEF, SPEED
 }
