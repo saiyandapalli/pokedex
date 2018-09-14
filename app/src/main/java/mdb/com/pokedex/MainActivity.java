@@ -13,9 +13,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Filter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // TODO: Replace with Pokedex
+        //Some dummy pokemon just to test the recycler view
         Pokemon pikachu = new Pokemon("Pikachu", 100, 20, 50, "", 100, 20, 50, "Rat", 50, 200, new ArrayList<>(Arrays.asList("Electric")));
         Pokemon bulbasaur = new Pokemon("Bulbasaur", 101, 50, 20, "", 100, 20, 50, "Monster", 50, 200, new ArrayList<>(Arrays.asList("Grass", "Poison")));
         Pokemon squirtle = new Pokemon("Squirtle", 102, 50, 30, "", 100, 20, 50, "Water thing", 50, 200, new ArrayList<>(Arrays.asList("Water")));
@@ -39,17 +44,16 @@ public class MainActivity extends AppCompatActivity {
 
         PokemonAdapter pokeAdapter = new PokemonAdapter(getApplicationContext(), pokedex);
         recyclerView.setAdapter(pokeAdapter);
-
-        Toolbar mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
     }
 
+    ///Method which creates the options menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
         MenuItem mSearch = menu.findItem(R.id.action_search);
 
         SearchView mSearchView = (SearchView) mSearch.getActionView();
+        //Binds a listener to the search view so we can detect when something is typed in
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -63,6 +67,37 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         return super.onCreateOptionsMenu(menu);
+    }
+
+    //Method called when a Menu Item is clicked
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_filter:
+                Intent filterIntent = new Intent(getApplicationContext(), FilterActivity.class);
+                startActivityForResult(filterIntent, 1);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                String minAttack = data.getStringExtra("minAttack");
+                String minDefense = data.getStringExtra("minDefense");
+                String minHealth = data.getStringExtra("minHealth");
+
+                Log.d("Filter","Filter: Min Attack="+minAttack+"; Min Defense="+minDefense+"; Min Health="+minHealth);
+
+                HashMap<String, Boolean> categories = (HashMap<String, Boolean>) data.getSerializableExtra("categories");
+                Log.d("Filter Categories", categories.toString());
+            }
+        }
     }
 }

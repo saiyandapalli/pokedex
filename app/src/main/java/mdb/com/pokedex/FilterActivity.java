@@ -1,6 +1,7 @@
 package mdb.com.pokedex;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -101,12 +102,15 @@ public class FilterActivity extends AppCompatActivity {
     private void doneTapped() {
         System.out.println("DONE TAPPED!");
 
-        // Use this to get selected categories as HashMap
-        System.out.println(adapter.categories);
-        System.out.println("Min Attack = " + minAttackEditText.getText().toString());
-        System.out.println("Min Defense = " + minDefenseEditText.getText().toString());
-        System.out.println("Min Health = " + minHealthEditText.getText().toString());
-
         // TODO: Handle logic for passing this information to the previous screen
+        Intent intent = new Intent();
+        intent.putExtra("minAttack", minAttackEditText.getText().toString());
+        intent.putExtra("minDefense", minDefenseEditText.getText().toString());
+        intent.putExtra("minHealth", minHealthEditText.getText().toString());
+        intent.putExtra("categories", adapter.categories);
+
+        setResult(RESULT_OK, intent);
+
+        finish();
     }
 }
