@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -77,7 +78,9 @@ public class FilterActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         recyclerView = findViewById(R.id.selectCategoryRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(sglm);
+
         adapter = new CategoryAdapter(FilterActivity.this, categories);
         recyclerView.setAdapter(adapter);
     }
