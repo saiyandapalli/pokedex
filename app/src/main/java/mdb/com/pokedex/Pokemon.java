@@ -1,6 +1,8 @@
 package mdb.com.pokedex;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class Pokemon implements Comparable {
@@ -36,15 +38,21 @@ public class Pokemon implements Comparable {
 
         //TODO: Better parsing of the URL to virtually guarantee the image is found
         String parsedName = name.toLowerCase();
-        if (parsedName.indexOf(" (") != -1) {
+        if (parsedName.contains("\u2640")) {
+            parsedName = parsedName.substring(0, parsedName.indexOf("\u2640"))+"-m";
+        } else if (parsedName.contains("\u2642")) {
+            parsedName = parsedName.substring(0, parsedName.indexOf("\u2642"))+"-f";
+        }
+
+        if (parsedName.contains(" (")) {
             String originalName = parsedName.substring(0, name.indexOf(" ("));
 
             //TODO this gen modifier thing doesnt work compeltely
             String genModifier = "";
-            if (parsedName.indexOf("X") != -1) {
-                genModifier = "-x";
-            } else if (parsedName.indexOf("Y") != -1) {
-                genModifier = "-y";
+            if (parsedName.contains("x")) {
+                genModifier += "-x";
+            } else if (parsedName.contains("y")) {
+                genModifier += "-y";
             }
 
             parsedName = originalName + "-mega"+genModifier;
