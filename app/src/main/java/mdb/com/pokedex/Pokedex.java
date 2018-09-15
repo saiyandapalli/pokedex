@@ -31,6 +31,20 @@ public class Pokedex {
     private Bounds defaultSpDefBounds;
     private Bounds defaultSpeedBounds;
 
+    @Override
+    public String toString() {
+        return "Pokedex{" +
+                "pokedex=" + pokedex +
+                ", pokeTypes=" + pokeTypes +
+                ", defaultAttackBounds=" + defaultAttackBounds +
+                ", defaultDefenseBounds=" + defaultDefenseBounds +
+                ", defaultHealthBounds=" + defaultHealthBounds +
+                ", defaultSpAtkBounds=" + defaultSpAtkBounds +
+                ", defaultSpDefBounds=" + defaultSpDefBounds +
+                ", defaultSpeedBounds=" + defaultSpeedBounds +
+                '}';
+    }
+
     private Pokedex() {
         /*
         The constructor is private because it should only be called within Pokedex

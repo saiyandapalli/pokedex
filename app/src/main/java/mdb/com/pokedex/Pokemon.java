@@ -1,11 +1,13 @@
 package mdb.com.pokedex;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
 
-public class Pokemon implements Comparable {
+public class Pokemon implements Comparable, Parcelable {
     private String name;
     private int id;
     private int attack;
@@ -19,6 +21,51 @@ public class Pokemon implements Comparable {
     private int total;
     private ArrayList<String> types;
     private String imageUrl;
+
+    protected Pokemon(Parcel in) {
+        name = in.readString();
+        id = in.readInt();
+        attack = in.readInt();
+        defense = in.readInt();
+        flavorText = in.readString();
+        hp = in.readInt();
+        spAtk = in.readInt();
+        spDef = in.readInt();
+        species = in.readString();
+        speed = in.readInt();
+        total = in.readInt();
+        types = in.createStringArrayList();
+        imageUrl = in.readString();
+    }
+
+    public static final Creator<Pokemon> CREATOR = new Creator<Pokemon>() {
+        @Override
+        public Pokemon createFromParcel(Parcel in) {
+            return new Pokemon(in);
+        }
+
+        @Override
+        public Pokemon[] newArray(int size) {
+            return new Pokemon[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeInt(id);
+        dest.writeInt(attack);
+        dest.writeInt(defense);
+        dest.writeString(flavorText);
+        dest.writeInt(hp);
+        dest.writeInt(spAtk);
+        dest.writeInt(spDef);
+        dest.writeString(species);
+        dest.writeInt(speed);
+        dest.writeInt(total);
+        dest.writeList(types);
+        dest.writeString(imageUrl);
+    }
 
     Pokemon(String name, int id, int attack, int defense, String flavorText, int hp, int spAtk, int spDef, String species, int speed, int total, ArrayList<String> types) {
         this.name = name;
@@ -59,6 +106,28 @@ public class Pokemon implements Comparable {
         }
 
         imageUrl += parsedName + ".jpg";
+        for (String line: this.toString().split("\n")) {
+            System.out.println(line);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Pokemon{" +
+                "name='" + name + '\'' +
+                ", \nid=" + id +
+                ", \nattack=" + attack +
+                ", \ndefense=" + defense +
+                ", \nflavorText='" + flavorText + '\'' +
+                ", \nhp=" + hp +
+                ", \nspAtk=" + spAtk +
+                ", \nspDef=" + spDef +
+                ", \nspecies='" + species + '\'' +
+                ", \nspeed=" + speed +
+                ", \ntotal=" + total +
+                ", \ntypes=" + types +
+                ", \nimageUrl='" + imageUrl + '\'' +
+                '}';
     }
 
     public int getPointValue(PointAttribute attr) {
@@ -139,6 +208,13 @@ public class Pokemon implements Comparable {
             return -1;
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
 }
 
 //An enum to keep track of the different types of integer values stored in Pokémon

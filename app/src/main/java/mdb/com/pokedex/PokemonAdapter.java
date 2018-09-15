@@ -37,6 +37,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
         //TODO: Make this a different layout depending on whether or not we are in List View or Card View
         int layoutId = (isGridLayout) ? R.layout.gridview_pokemon : R.layout.rowview_pokemon;
         View v = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
+
         return new PokemonViewHolder(v, isGridLayout);
     }
 
@@ -56,7 +57,6 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
             pokemonViewHolder.typeText.setText(typeString);
         }
 
-        Log.d("Loading Image", "Loading Image with URL: "+p.getImageUrl());
         Glide.with(context).load(p.getImageUrl()).error(
                 Glide.with(context).load(android.R.mipmap.sym_def_app_icon)).into(pokemonViewHolder.pokeImageView);
     }
