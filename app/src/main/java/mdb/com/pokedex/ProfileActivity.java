@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,6 +32,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView total;
     private ImageView imageView;
     private Button onlineSearchButton;
+    private MenuItem doneButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,8 @@ public class ProfileActivity extends AppCompatActivity {
         setupTextViews();
         setupButton();
 
+        Log.d("PokeURl", pokemon.getImageUrl());
+        System.out.println(pokemon.getImageUrl());
         Glide.with(this).load(pokemon.getImageUrl()).error(
                 Glide.with(this).load(android.R.mipmap.sym_def_app_icon)).into(imageView);
     }
@@ -96,5 +102,24 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    // Adds the done button to the toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        doneButton = menu.add(Menu.NONE, 1000, Menu.NONE, "Done");
+        doneButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    // Called when done button is tapped
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item == doneButton) {
+            doneTapped();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void doneTapped() {
+        finish();
+    }
 }

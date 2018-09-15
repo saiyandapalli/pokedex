@@ -81,34 +81,7 @@ public class Pokemon implements Comparable, Parcelable {
         this.total = total;
         this.types = types;
 
-        imageUrl = "https://img.pokemondb.net/artwork/";
-
-        //TODO: Better parsing of the URL to virtually guarantee the image is found
-        String parsedName = name.toLowerCase();
-        if (parsedName.contains("\u2640")) {
-            parsedName = parsedName.substring(0, parsedName.indexOf("\u2640"))+"-m";
-        } else if (parsedName.contains("\u2642")) {
-            parsedName = parsedName.substring(0, parsedName.indexOf("\u2642"))+"-f";
-        }
-
-        if (parsedName.contains(" (")) {
-            String originalName = parsedName.substring(0, name.indexOf(" ("));
-
-            //TODO this gen modifier thing doesnt work compeltely
-            String genModifier = "";
-            if (parsedName.contains("x")) {
-                genModifier += "-x";
-            } else if (parsedName.contains("y")) {
-                genModifier += "-y";
-            }
-
-            parsedName = originalName + "-mega"+genModifier;
-        }
-
-        imageUrl += parsedName + ".jpg";
-        for (String line: this.toString().split("\n")) {
-            System.out.println(line);
-        }
+        getImageUrl();
     }
 
     @Override
@@ -197,7 +170,31 @@ public class Pokemon implements Comparable, Parcelable {
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        imageUrl = "https://img.pokemondb.net/artwork/";
+
+        //TODO: Better parsing of the URL to virtually guarantee the image is found
+        String parsedName = name.toLowerCase();
+        if (parsedName.contains("\u2640")) {
+            parsedName = parsedName.substring(0, parsedName.indexOf("\u2640"))+"-m";
+        } else if (parsedName.contains("\u2642")) {
+            parsedName = parsedName.substring(0, parsedName.indexOf("\u2642"))+"-f";
+        }
+
+        if (parsedName.contains(" (")) {
+            String originalName = parsedName.substring(0, name.indexOf(" ("));
+
+            //TODO this gen modifier thing doesnt work compeltely
+            String genModifier = "";
+            if (parsedName.contains("x")) {
+                genModifier += "-x";
+            } else if (parsedName.contains("y")) {
+                genModifier += "-y";
+            }
+
+            parsedName = originalName + "-mega"+genModifier;
+        }
+
+        return imageUrl+parsedName + ".jpg";
     }
 
     @Override

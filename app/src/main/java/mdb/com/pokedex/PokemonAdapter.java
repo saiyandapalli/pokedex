@@ -1,9 +1,9 @@
 package mdb.com.pokedex;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +43,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
 
     @Override
     public void onBindViewHolder(@NonNull PokemonAdapter.PokemonViewHolder pokemonViewHolder, int i) {
-        Pokemon p = data.get(i);
+        final Pokemon p = data.get(i);
 
         pokemonViewHolder.nameText.setText(p.getName());
         if (!isGridLayout) {
@@ -59,6 +59,16 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
 
         Glide.with(context).load(p.getImageUrl()).error(
                 Glide.with(context).load(android.R.mipmap.sym_def_app_icon)).into(pokemonViewHolder.pokeImageView);
+
+        pokemonViewHolder.pokeImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ProfileActivity.class);
+                intent.putExtra("pokemon_pass", p);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
     }
 
     public int getItemCount() {
